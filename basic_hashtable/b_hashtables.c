@@ -15,7 +15,7 @@ typedef struct Pair {
   Basic hash table
  ****/
 typedef struct BasicHashTable {
-  int capacity;
+  int capacity; // number of buckets/array size
   Pair **storage;
 } BasicHashTable;
 
@@ -48,6 +48,8 @@ void destroy_pair(Pair *pair)
 
   Do not modify this!
  ****/
+
+// Time Complexity: O(n) where n is the length of the input string
 unsigned int hash(char *str, int max)
 {
   unsigned long hash = 5381;
@@ -91,6 +93,14 @@ BasicHashTable *create_hash_table(int capacity)
  ****/
 void hash_table_insert(BasicHashTable *ht, char *key, char *value)
 {
+  // Hash the key to get the index
+  int hash_index = hash(key, ht->capacity);
+
+  // Create a pair with the key/value
+  Pair *pair = create_pair(key, value);
+
+  // Insert the pair in the hashed index
+  ht->storage[hash_index] = pair;
 
 }
 
@@ -111,6 +121,20 @@ void hash_table_remove(BasicHashTable *ht, char *key)
  ****/
 char *hash_table_retrieve(BasicHashTable *ht, char *key)
 {
+
+  int new_index = hash(key, ht->capacity);
+
+  if (ht->storage[new_index] != NULL) {
+    if (strcmp(ht->storage[new_index]->key, key) == 0) {
+      printf("Key is: &s\n", ht->storage[new_index]->value);
+
+    } else {
+      printf("Keys don't match\n");
+    }
+  } else {
+    printf("Keys don't match\n");
+  }
+
   return NULL;
 }
 
