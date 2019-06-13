@@ -96,7 +96,23 @@ HashTable *create_hash_table(int capacity)
  */
 void hash_table_insert(HashTable *ht, char *key, char *value)
 {
+  // Hash the key to get the index
+  unsigned int hash_index = hash(key, ht->capacity);
 
+  // Create a linked pair with the key/value
+  LinkedPair *linked_pair = create_pair(key, value);
+
+  // Create a variable that references the hashed index
+  LinkedPair *currently_stored_pair = ht->storage[hash_index];
+
+  // If a pair already exists in this hashed index
+  if (currently_stored_pair != NULL) {
+    // Set the currently stored pair's `next` to the the linked pair's key to be inserted
+    currently_stored_pair->next = linked_pair->key;
+  }
+
+  // Otherwise, the slot was empty, and the pair should be inserted into the hashed index
+  ht->storage[hash_index] = linked_pair; 
 }
 
 /*
