@@ -164,12 +164,12 @@ char *hash_table_retrieve(BasicHashTable *ht, char *key)
 
     // If they don't match, print an error
     } else {
-      printf("Keys don't match\n");
+      fprintf(stderr, "Unable to retrieve an entry with key\n");
       return NULL;
     }
   // If the slot is NULL, print an error
   } else {
-    printf("Keys don't match\n");
+    fprintf(stderr, "Unable to retrieve an entry with key\n");
     return NULL;
   }
 }
