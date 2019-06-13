@@ -107,8 +107,8 @@ void hash_table_insert(HashTable *ht, char *key, char *value)
 
   // If a pair already exists in this hashed index
   if (currently_stored_pair != NULL) {
-    // Set the currently stored pair's `next` to the the linked pair's key to be inserted
-    currently_stored_pair->next = linked_pair->key;
+    // Set the currently stored pair's `next` to the the linked pair to be inserted
+    currently_stored_pair->next = linked_pair;
   }
 
   // Otherwise, the slot was empty, and the pair should be inserted into the hashed index
@@ -125,6 +125,20 @@ void hash_table_insert(HashTable *ht, char *key, char *value)
  */
 void hash_table_remove(HashTable *ht, char *key)
 {
+  // Hash the key to get the index
+  int hash_index = hash(key, ht->capacity);
+
+  // If there is an an existing entry and they match,
+  if (ht->storage[hash_index] != NULL && strcmp(key, ht->storage[hash_index])) {
+
+    // if the entry has a next, change that next entry to be the head
+
+
+  }
+
+  
+
+  // If they don't match, move down the linked list, checking the nodes
 
 }
 
@@ -138,6 +152,35 @@ void hash_table_remove(HashTable *ht, char *key)
  */
 char *hash_table_retrieve(HashTable *ht, char *key)
 {
+  // Hash the key to get the index
+  int hash_index = hash(key, ht->capacity);
+
+  // Check if there is a valid entry in the slot
+  if (ht->storage[hash_index] != NULL) {
+
+    // Set the current pair to a variable
+    LinkedPair *current_pairs_pointer = ht->storage[hash_index];
+
+    // While more Linked Pair's exist
+    while (current_pairs_pointer->next != NULL) {
+      // If they match, return the value
+      if (strcmp(current_pairs_pointer->key, key) == 0) {
+        return current_pairs_pointer->value;
+      }
+      // Set the current pair to the next pair
+      current_pairs_pointer = current_pairs_pointer->next;
+    }
+    
+    // When no more Linked Pair's exist, and if they match, return the value
+    if (strcmp(current_pairs_pointer->key, key) == 0) {
+        return current_pairs_pointer->value;
+      }
+
+  }
+
+  // Otherwise, print an error
+  fprintf(stderr, "unable to retrieve an entry with key: %s\n", key);
+
   return NULL;
 }
 
